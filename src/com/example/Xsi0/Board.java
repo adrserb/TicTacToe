@@ -20,15 +20,7 @@ public class Board {
                 cells[currentRow][currentCol] = new Cell(currentRow, currentCol, CellContent.EMPTY); //create cell objects
             }
         }
-//                cells[0][0].content = CellContent.X;
-//                cells[0][1].content = CellContent.O;
-//                cells[0][2].content = CellContent.O;
-//                cells[1][0].content = CellContent.X;
-//                cells[1][1].content = CellContent.X;
-//                cells[1][2].content = CellContent.O;
-//                cells[2][0].content = CellContent.X;
-//                cells[2][1].content = CellContent.X;
-//                cells[2][2].content = CellContent.O;
+
     }
 
     public void reInit() {
