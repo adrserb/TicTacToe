@@ -4,12 +4,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
+    //git test
     int playerSelectionRow;
     int playerSelectionCol;
     GameStatus currentState = GameStatus.PLAYING;
     Board board = new Board();
-    CellContent currentPlayer = firstPlayer();
+    AbstractPlayer player1 = new HumanPlayer(CellContent.X, board);
+    AbstractPlayer player2 = new ComputerPlayerLevel1(CellContent.O, board);
+
+    AbstractPlayer currentPlayer = firstPlayer();
 
     public static void main(String[] args) {
         Main myMain = new Main();
@@ -33,7 +36,7 @@ public class Main {
 
     public void start() {
         while(currentState == GameStatus.PLAYING) {
-            playerMove(currentPlayer);
+            currentPlayer.playerMove();
             updateGameStatus(currentPlayer);
             board.paint();
         }
@@ -56,72 +59,72 @@ public class Main {
         }
     }
 
-    public CellContent firstPlayer () {
+    public AbstractPlayer firstPlayer () {
         Random randomGenerator = new Random();
         int xScore = randomGenerator.nextInt(10);
         int oScore = randomGenerator.nextInt(10);
         if (xScore>=oScore) {
             System.out.println("Player X goes first with score " + xScore);
-            return CellContent.X;
+            return player1;
         }
         else {
             System.out.println("Player O goes first with score " + oScore);
-            return CellContent.O;
+            return player2;
         }
     }
 
 
-    public void playerMove(CellContent symbol) {
-        //position choice
-            String playerSelection;
-            boolean isInputValid;
-            System.out.println("Player " + symbol + ":");
-            Scanner reader = new Scanner(System.in);
-            System.out.println("Enter position: ");
+//    public void playerMove(CellContent symbol) {
+//        //position choice
+//            String playerSelection;
+//            boolean isInputValid;
+//            System.out.println("Player " + symbol + ":");
+//            Scanner reader = new Scanner(System.in);
+//            System.out.println("Enter position: ");
+//
+//        do {
+//            playerSelection = reader.nextLine();
+//            isInputValid = positionValidator(playerSelection);
+//
+//        }while(!isInputValid);
+//        board.setCells(playerSelectionRow, playerSelectionCol, symbol);
+//    }
 
-        do {
-            playerSelection = reader.nextLine();
-            isInputValid = positionValidator(playerSelection);
 
-        }while(!isInputValid);
-        board.setCells(playerSelectionRow, playerSelectionCol, symbol);
-    }
-
-
-    public void updateGameStatus(CellContent symbol) {
+    public void updateGameStatus(AbstractPlayer player) {
         if(board.isTie()) {
             currentState = GameStatus.DRAW;
         }
-        if(board.wins(symbol)) {
-            if (symbol == CellContent.X)
+        if(board.wins(player)) {
+            if (player.playerSymbol == CellContent.X)
                 currentState = GameStatus.XWON;
             else
                 currentState = GameStatus.OWON;
         }
 
-        if (symbol == CellContent.X)
-            currentPlayer = CellContent.O;
-        else currentPlayer = CellContent.X;
+        if (player.playerSymbol == CellContent.X)
+            currentPlayer = player2;
+        else currentPlayer = player1;
     }
 
-    public boolean positionValidator(String inputPosition) {
-        String pattern = "^[1-3]{2}$";
-        boolean isValid = inputPosition.matches(pattern);
-//        boolean isCellEmpty = true;
-        if(!isValid) {
-            System.out.println("Invalid please retry: ");
-            return false;
-        }
-        else {
-            playerSelectionRow = Character.getNumericValue(inputPosition.charAt(0));
-            playerSelectionCol = Character.getNumericValue(inputPosition.charAt(1));
-            boolean isCellEmpty = board.isCellFree(playerSelectionRow-1, playerSelectionCol-1);
-            if(!isCellEmpty) {
-                System.out.println("Cell not empty: ");
-                return false;
-            }
-        }
-        return true;
-    }
+//    public boolean positionValidator(String inputPosition) {
+//        String pattern = "^[1-3]{2}$";
+//        boolean isValid = inputPosition.matches(pattern);
+////        boolean isCellEmpty = true;
+//        if(!isValid) {
+//            System.out.println("Invalid please retry: ");
+//            return false;
+//        }
+//        else {
+//            playerSelectionRow = Character.getNumericValue(inputPosition.charAt(0));
+//            playerSelectionCol = Character.getNumericValue(inputPosition.charAt(1));
+//            boolean isCellEmpty = board.isCellFree(playerSelectionRow-1, playerSelectionCol-1);
+//            if(!isCellEmpty) {
+//                System.out.println("Cell not empty: ");
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
 }
