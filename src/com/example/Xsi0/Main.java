@@ -10,9 +10,9 @@ public class Main {
     GameStatus currentState = GameStatus.PLAYING;
     Board board = new Board();
     AbstractPlayer player1 = new HumanPlayer(CellContent.X, board);
-    AbstractPlayer player2 = new ComputerPlayerLevel1(CellContent.O, board);
+    AbstractPlayer player2;
 
-    AbstractPlayer currentPlayer = firstPlayer();
+    AbstractPlayer currentPlayer;
 
     public static void main(String[] args) {
         Main myMain = new Main();
@@ -20,8 +20,9 @@ public class Main {
         while(myMain.currentState == GameStatus.IDLE) {
             System.out.println("Play again?");
             String response;
-            Scanner reader = new Scanner(System.in);
-            response = reader.nextLine();
+            Scanner playAgainReader = new Scanner(System.in);
+            response = playAgainReader.nextLine();
+            System.out.println(response);
             if(response.equalsIgnoreCase("yes")) {
                 myMain.currentState = GameStatus.PLAYING;
                 myMain.board.reInit();
@@ -35,6 +36,17 @@ public class Main {
     }
 
     public void start() {
+        System.out.println("Choose your opponent: 1 for human 2 for C1:");
+        Scanner reader = new Scanner(System.in);
+        int opponentType = reader.nextInt();
+        if(opponentType == 1) {
+            player2 = new HumanPlayer(CellContent.O, board);
+        }
+        else {
+            player2 = new ComputerPlayerLevel1(CellContent.O, board);
+        }
+
+        currentPlayer = firstPlayer();
         while(currentState == GameStatus.PLAYING) {
             currentPlayer.playerMove();
             updateGameStatus(currentPlayer);
